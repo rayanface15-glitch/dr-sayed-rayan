@@ -234,8 +234,7 @@ if(DEMO){ $("#note").style.display="block"; }
 else try{
   const base="https://www.gstatic.com/firebasejs/10.12.2/";
   const [{initializeApp},A,F]=await Promise.all([import(base+"firebase-app.js"),import(base+"firebase-auth.js"),import(base+"firebase-firestore.js")]);
-  const app=initializeApp(firebaseConfig); db=F.getFirestore(app); fb=F; auth=A.getAuth(app);
-  fb.A=A;
+  const app=initializeApp(firebaseConfig); db=F.getFirestore(app); fb=Object.assign({},F,{A}); auth=A.getAuth(app);
   A.onAuthStateChanged(auth,u=>setAdmin(!!u && (u.email||"").toLowerCase()===ADMIN_EMAIL.toLowerCase()));
 }catch(e){ const n=$("#note"); n.textContent="تعذر تحميل Firebase: "+(e.message||e); n.style.display="block"; }
 
