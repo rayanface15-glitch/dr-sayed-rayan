@@ -55,6 +55,7 @@ input,textarea,select{width:100%;padding:10px;border-radius:8px;border:1px solid
 .vid iframe,.vid video{width:100%;height:100%;border:0;display:block}
 footer{text-align:center;padding:26px;color:var(--mut);border-top:1px solid #39ff8822}
 .wafab{position:fixed;bottom:18px;left:18px;z-index:9;width:56px;height:56px;border-radius:50%;background:#25d366;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px #0008}
+#authBtn{display:none}
 #note{background:var(--yel);color:#222;text-align:center;padding:6px;font-size:.85rem;display:none}
 </style>
 </head>
@@ -217,7 +218,9 @@ function setAdmin(v){
   isAdmin=v; document.body.classList.toggle("is-admin",v);
   $("#adminBadge").style.display=v?"inline":"none";
   $("#authBtn").textContent=v?"خروج":"دخول المدير";
+  showAuth();
 }
+function showAuth(){ $("#authBtn").style.display=(location.hash==="#admin"||isAdmin)?"inline-block":"none"; }
 
 /* Firebase init */
 if(DEMO){ $("#note").style.display="block"; }
@@ -226,7 +229,7 @@ else{
   const [{initializeApp},A,F]=await Promise.all([import(base+"firebase-app.js"),import(base+"firebase-auth.js"),import(base+"firebase-firestore.js")]);
   const app=initializeApp(firebaseConfig); db=F.getFirestore(app); fb=F; auth=A.getAuth(app);
   fb.A=A;
-  A.onAuthStateChanged(auth,u=>setAdmin(!!u && u.email===ADMIN_EMAIL));
+  A.onAuthStateChanged(auth,u=>setAdmin(!!u && (u.email||"").toLowerCase()===ADMIN_EMAIL.toLowerCase()));
 }
 
 dlg.showModal=()=>{dlg.style.display="flex";$("#pw").focus()};dlg.close=()=>{dlg.style.display="none"};
@@ -239,9 +242,16 @@ $("#loginForm").onsubmit=async e=>{
   e.preventDefault();
   try{
     if(DEMO){ if($("#pw").value!=="admin123") throw 0; }
-    else await fb.A.signInWithEmailAndPassword(auth,$("#em").value,$("#pw").value);
+    else{
+      const c=await fb.A.signInWithEmailAndPassword(auth,$("#em").value.trim(),$("#pw").value);
+      if((c.user.email||"").toLowerCase()!==ADMIN_EMAIL.toLowerCase()){ await fb.A.signOut(auth); throw {code:"not-admin"}; }
+    }
     setAdmin(true); dlg.close();
-  }catch{ $("#err").textContent="بيانات الدخول غير صحيحة"; }
+  }catch(err){
+    const m={"auth/invalid-credential":"الإيميل أو كلمة السر غلط","auth/wrong-password":"كلمة السر غلط","auth/user-not-found":"الإيميل ده مش مسجّل في Firebase","auth/invalid-email":"شكل الإيميل غلط","auth/unauthorized-domain":"الدومين مش مضاف في Authorized domains","auth/operation-not-allowed":"فعّل Email/Password في Authentication","auth/invalid-api-key":"الـ apiKey في الكود غلط","auth/api-key-not-valid.-please-pass-a-valid-api-key.":"الـ apiKey في الكود غلط","auth/network-request-failed":"مشكلة في الإنترنت","auth/too-many-requests":"محاولات كتير، استنى شوية","not-admin":"الحساب ده مش إيميل المدير المسموح"};
+    const c=err&&err.code;
+    $("#err").textContent = DEMO ? "بيانات الدخول غير صحيحة" : ((m[c]||"خطأ") + (c&&c!=="not-admin" ? " ("+c+")" : ""));
+  }
 };
 document.addEventListener("submit",async e=>{
   const f=e.target.closest("form[data-col]"); if(!f) return; e.preventDefault();
@@ -278,6 +288,8 @@ document.addEventListener("click",async e=>{
   const b=e.target.closest("[data-del]"); if(!b||!isAdmin) return;
   if((DEMO||confirm("متأكد من الحذف؟"))){ await del(b.dataset.del,b.dataset.id); render(); }
 });
+showAuth(); addEventListener("hashchange",showAuth);
+let taps=0,tt; $(".logoimg").onclick=()=>{ taps++; clearTimeout(tt); tt=setTimeout(()=>taps=0,1500); if(taps>=5){ taps=0; $("#authBtn").style.display="inline-block"; } };
 render();
 </script>
 </body>
