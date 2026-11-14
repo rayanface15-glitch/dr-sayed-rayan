@@ -152,7 +152,7 @@ const firebaseConfig = {
   appId: "1:386115947078:web:e0d482f43ef5a3b8f35847"
 };
 /* ====== 2) إيميل المدير المسموح له بالتعديل ====== */
-const ADMIN_EMAIL = "admin@gmail.com";
+const ADMIN_EMAIL = "sayed@gmail.com";
 
 const DEMO = firebaseConfig.apiKey.startsWith("YOUR");
 const $ = s => document.querySelector(s);
@@ -218,7 +218,7 @@ const tpl = {
 async function render(){
   for(const col of Object.keys(tpl)){
     try{ const items=await list(col); $("#"+col+"List").innerHTML = items.length? items.map(tpl[col]).join("") : `<p style="color:var(--mut)">قريباً...</p>`; }
-    catch(e){ $("#"+col+"List").innerHTML=`<p style="color:#ff8a8a">تعذر تحميل البيانات</p>`; }
+    catch(e){ $("#"+col+"List").innerHTML=`<p style="color:#ff8a8a;direction:ltr;text-align:left">تعذر تحميل البيانات: ${esc(e.code||e.message||e)}</p>`; }
   }
 }
 function setAdmin(v){
