@@ -136,6 +136,13 @@ footer{text-align:center;padding:26px;color:var(--mut);border-top:1px solid #39f
   </form>
 </div></div>
 
+<script>
+(function(){var b=document.getElementById("authBtn");
+function s(){ if(/admin/.test(location.hash+location.search)) b.style.display="inline-block"; }
+s(); addEventListener("hashchange",s);
+var t=0,x; document.querySelector(".logoimg").onclick=function(){t++;clearTimeout(x);x=setTimeout(function(){t=0},1500);if(t>=5){t=0;b.style.display="inline-block"}};
+})();
+</script>
 <script type="module">
 /* ====== 1) ضع إعدادات Firebase هنا (من Project settings > Web app) ====== */
 const firebaseConfig = {
@@ -220,17 +227,17 @@ function setAdmin(v){
   $("#authBtn").textContent=v?"خروج":"دخول المدير";
   showAuth();
 }
-function showAuth(){ $("#authBtn").style.display=(location.hash==="#admin"||isAdmin)?"inline-block":"none"; }
+function showAuth(){ if(isAdmin||/admin/.test(location.hash+location.search)) $("#authBtn").style.display="inline-block"; }
 
 /* Firebase init */
 if(DEMO){ $("#note").style.display="block"; }
-else{
+else try{
   const base="https://www.gstatic.com/firebasejs/10.12.2/";
   const [{initializeApp},A,F]=await Promise.all([import(base+"firebase-app.js"),import(base+"firebase-auth.js"),import(base+"firebase-firestore.js")]);
   const app=initializeApp(firebaseConfig); db=F.getFirestore(app); fb=F; auth=A.getAuth(app);
   fb.A=A;
   A.onAuthStateChanged(auth,u=>setAdmin(!!u && (u.email||"").toLowerCase()===ADMIN_EMAIL.toLowerCase()));
-}
+}catch(e){ const n=$("#note"); n.textContent="تعذر تحميل Firebase: "+(e.message||e); n.style.display="block"; }
 
 dlg.showModal=()=>{dlg.style.display="flex";$("#pw").focus()};dlg.close=()=>{dlg.style.display="none"};
 if(DEMO){$("#em").style.display="none";$("#pw").placeholder="كلمة السر التجريبية: admin123"}
@@ -289,7 +296,6 @@ document.addEventListener("click",async e=>{
   if((DEMO||confirm("متأكد من الحذف؟"))){ await del(b.dataset.del,b.dataset.id); render(); }
 });
 showAuth(); addEventListener("hashchange",showAuth);
-let taps=0,tt; $(".logoimg").onclick=()=>{ taps++; clearTimeout(tt); tt=setTimeout(()=>taps=0,1500); if(taps>=5){ taps=0; $("#authBtn").style.display="inline-block"; } };
 render();
 </script>
 </body>
