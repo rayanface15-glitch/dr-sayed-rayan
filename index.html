@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="د. سيد ريان - علاج الانزلاق الغضروفي بدون جراحة، فروع العيادة، آراء المرضى، وحجز كشف أو استشارة أونلاين عبر واتساب.">
+<link rel="icon" href="logo.png">
 <title>د. سيد ريان | علاج الانزلاق الغضروفي بدون جراحة</title>
 <style>
 :root{--bg:#06261c;--card:#0b3d2e;--neon:#39ff88;--yel:#ffd21f;--tx:#eafff3;--mut:#9fc7b3}
@@ -27,7 +29,7 @@ body.is-admin .admin{display:block}
 .admin h4{color:var(--yel);margin-bottom:10px}
 .admin form{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
 input,textarea,select{width:100%;padding:10px;border-radius:8px;border:1px solid #39ff8855;background:#06261c;color:var(--tx);font:inherit}
-.del{display:none}body.is-admin .del{display:inline-block}
+.del,.edt{display:none}body.is-admin .del,body.is-admin .edt{display:inline-block}
 #dlg{display:none;position:fixed;inset:0;background:#000b;z-index:50;align-items:center;justify-content:center}#dlg .box{border:1px solid var(--neon);border-radius:16px;background:var(--card);color:var(--tx);padding:24px;width:min(92vw,380px)}
 #dlg form{display:grid;gap:10px}
 .logoimg{background:#fff;border-radius:12px;padding:3px 12px;display:block;height:46px}
@@ -69,12 +71,25 @@ footer{text-align:center;padding:26px;color:var(--mut);border-top:1px solid #39f
 
 <div class="hero">
   <div>
-  <h1>علاج <em>الانزلاق الغضروفي</em> بدون جراحة</h1>
-  <p>برامج علاج طبيعي متخصصة تساعدك ترجع لحياتك الطبيعية بدون عملية. اختار أقرب فرع ليك واحجز كشفك مع د. سيد ريان.</p>
-  <a href="#branches" class="btn">أقرب فرع ليك</a> <a href="#reviews" class="btn y">آراء المرضى</a>
+  <h1 id="heroTitle">علاج <em>الانزلاق الغضروفي</em> بدون جراحة</h1>
+  <p id="heroText">برامج علاج طبيعي متخصصة تساعدك ترجع لحياتك الطبيعية بدون عملية. اختار أقرب فرع ليك واحجز كشفك مع د. سيد ريان.</p>
+  <a href="#branches" class="btn">أقرب فرع ليك</a> <a href="#reviews" class="btn y">آراء المرضى</a> <a href="#online" class="btn o">احجز / ابعت كشفك</a>
   </div>
   <img class="pic" src="doctor.jpg" alt="د. سيد ريان">
 </div>
+
+<div class="admin" id="siteAdmin" style="margin:20px 5%"><h4>تعديل نصوص الصفحة</h4>
+  <form id="siteForm">
+    <input name="heroTitle" placeholder="العنوان الرئيسي (حط *النص* لتلوينه)">
+    <textarea name="heroText" rows="3" placeholder="الوصف تحت العنوان"></textarea>
+    <input name="waNumber" placeholder="رقم الواتساب بالصيغة الدولية (201080276369)">
+    <input name="onlineTitle" placeholder="عنوان قسم الحجز والاستشارة">
+    <textarea name="onlineText" rows="4" placeholder="تفاصيل الاستشارة وإرسال الكشوفات"></textarea>
+    <input name="onlineFee" placeholder="سعر الاستشارة الأونلاين (بالجنيه)">
+    <textarea name="payText" rows="2" placeholder="طرق الدفع (سطر لكل طريقة)"></textarea>
+    <input name="footNote" placeholder="الملحوظة في الفوتر">
+    <button>حفظ</button>
+  </form></div>
 
 <section id="branches">
   <h2>فروعنا</h2>
@@ -96,9 +111,27 @@ footer{text-align:center;padding:26px;color:var(--mut);border-top:1px solid #39f
       <input name="title" placeholder="اسم الطريقة" required>
       <textarea name="desc" rows="4" placeholder="شرح مختصر (كام سطر)" required></textarea>
       <label style="font-size:.8rem;color:var(--mut)">صورة الطريقة (اختياري)<input type="file" name="imgFile" accept="image/*"></label>
+      <input name="btnText" placeholder="نص زر تحت الكارت (اختياري، مثال: احجز الآن)">
+      <input name="btnLink" placeholder="رابط الزر (سيبه فاضي = يفتح واتساب)">
       <button>إضافة</button>
     </form></div>
   <div class="grid" id="treatmentsList"></div>
+</section>
+
+<section id="online">
+  <h2 id="onlineTitle">استشارة وحجز أونلاين</h2>
+  <p id="onlineText" style="white-space:pre-line;color:var(--mut);margin-bottom:16px"></p>
+  <div class="card"><form id="bookForm" style="display:grid;gap:10px">
+    <select name="type"><option>حجز كشف في الفرع</option><option>استشارة أونلاين</option></select>
+    <input name="pname" placeholder="الاسم" required>
+    <input name="age" placeholder="السن">
+    <select name="how" id="bookHow"><option>فيديو كول</option><option>مكالمة صوتية</option><option>رسائل واتساب</option><option>أي طريقة تناسب حضرتك</option></select>
+    <div id="payBox" style="display:none;background:#0a3226;border:1px dashed var(--yel);border-radius:10px;padding:12px;font-size:.92rem"></div>
+    <select name="branch" id="bookBranch"><option value="">اختار الفرع</option></select>
+    <textarea name="complaint" rows="3" placeholder="اوصف الشكوى باختصار"></textarea>
+    <button>ابعت على واتساب</button>
+    <p style="font-size:.85rem">هيتفتح الواتساب برسالة جاهزة، وابعت صور الأشعة والتقارير في نفس المحادثة، وهنحدد معاك الميعاد على الواتساب. الحجز والتواصل عن طريق الواتساب فقط.</p>
+  </form></div>
 </section>
 
 <section id="reviews">
@@ -118,12 +151,12 @@ footer{text-align:center;padding:26px;color:var(--mut);border-top:1px solid #39f
 <footer>
   <div style="font-weight:800;color:var(--tx);margin-bottom:10px">للحجز والاستفسار</div>
   <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:14px">
-    <a class="btn" style="background:#25d366;color:#fff" target="_blank" rel="noopener" href="https://wa.me/201080276369"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle;margin-inline-end:6px"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.2 14c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.1.1.3 0 .5l-.3.4-.4.4c-.1.1-.3.3-.1.6.2.3.7 1.2 1.5 1.9 1 .9 1.9 1.200 2.200 1.300.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.800.9c.3.1.5.2.5.3.1.2.1.8-.1 1.4z"/></svg>واتساب</a>
-    <a class="btn y" href="tel:+201080276369" dir="ltr">📞 01080276369</a>
+    <a id="waFooter" class="btn" style="background:#25d366;color:#fff" target="_blank" rel="noopener" href="https://wa.me/201080276369"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle;margin-inline-end:6px"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.2 14c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.1.1.3 0 .5l-.3.4-.4.4c-.1.1-.3.3-.1.6.2.3.7 1.2 1.5 1.9 1 .9 1.9 1.200 2.200 1.300.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.800.9c.3.1.5.2.5.3.1.2.1.8-.1 1.4z"/></svg>واتساب</a>
+    <a id="telBtn" class="btn y" href="tel:+201080276369" dir="ltr">📞 01080276369</a>
   </div>
-  © د. سيد ريان — جميع الحقوق محفوظة<br><small>النتائج تختلف من حالة لأخرى، والتشخيص بعد الكشف الطبي.</small></footer>
+  © د. سيد ريان — جميع الحقوق محفوظة<br><small id="footNote">النتائج تختلف من حالة لأخرى، والتشخيص بعد الكشف الطبي.</small></footer>
 
-<a class="wafab" target="_blank" rel="noopener" href="https://wa.me/201080276369" aria-label="واتساب"><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle;margin:0"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.2 14c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.1.1.3 0 .5l-.3.4-.4.4c-.1.1-.3.3-.1.6.2.3.7 1.2 1.5 1.9 1 .9 1.9 1.200 2.200 1.300.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.800.9c.3.1.5.2.5.3.1.2.1.8-.1 1.4z"/></svg></a>
+<a id="waFab" class="wafab" target="_blank" rel="noopener" href="https://wa.me/201080276369" aria-label="واتساب"><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle;margin:0"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.2 14c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.1.1.3 0 .5l-.3.4-.4.4c-.1.1-.3.3-.1.6.2.3.7 1.2 1.5 1.9 1 .9 1.9 1.200 2.200 1.300.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.800.9c.3.1.5.2.5.3.1.2.1.8-.1 1.4z"/></svg></a>
 
 <div id="dlg"><div class="box">
   <form id="loginForm" novalidate>
@@ -208,16 +241,49 @@ function vid(u){
   if(/^blob:/.test(u)||/^https?:\/\/.+(\.(mp4|webm|mov)(\?.*)?$|firebasestorage)/i.test(u)) return `<div class="vid"><video controls preload="metadata" playsinline src="${esc(u)}"></video></div>`;
   return /^https?:\/\//.test(u)?`<div class="acts"><a class="btn y" target="_blank" rel="noopener" href="${esc(u)}">شاهد الفيديو</a></div>`:"";
 }
-const delBtn=(col,id)=>`<button class="btn r del" data-del="${col}" data-id="${esc(id)}">حذف</button>`;
+const defSite={heroTitle:"علاج *الانزلاق الغضروفي* بدون جراحة",heroText:"برامج علاج طبيعي متخصصة تساعدك ترجع لحياتك الطبيعية بدون عملية. اختار أقرب فرع ليك واحجز كشفك مع د. سيد ريان.",waNumber:"201080276369",onlineTitle:"استشارة وحجز أونلاين",onlineText:"احجز استشارة أونلاين مع د. سيد ريان فيديو كول أو بالطريقة اللي تناسب حضرتك، وابعت الأشعة والتحاليل (رنين مغناطيسي / أشعة) على الواتساب قبل الميعاد عشان تتراجع.\nالحجز وتحديد الميعاد وكل التفاصيل بتتم عن طريق الواتساب فقط.",onlineFee:"300",payText:"فودافون كاش: 01080276369\nانستاباي: 01010960319",footNote:"النتائج تختلف من حالة لأخرى، والتشخيص بعد الكشف الطبي."};
+let site={...defSite}; const cache={};
+const waNum=()=>String(site.waNumber).replace(/\D/g,"");
+const waUrl=m=>"https://wa.me/"+waNum()+(m?"?text="+encodeURIComponent(m):"");
+const btnHref=t=>/^https?:\/\//.test(t.btnLink||"")?t.btnLink:waUrl("عايز أحجز: "+t.title);
+function applySite(){
+  $("#heroTitle").innerHTML=esc(site.heroTitle).replace(/\*(.+?)\*/g,"<em>$1</em>");
+  $("#heroText").textContent=site.heroText;
+  $("#onlineTitle").textContent=site.onlineTitle; $("#onlineText").textContent=site.onlineText;
+  $("#footNote").textContent=site.footNote;
+  const n=waNum(); $("#waFooter").href=waUrl(); $("#waFab").href=waUrl();
+  $("#telBtn").href="tel:+"+n; $("#telBtn").textContent="📞 "+(n.startsWith("20")?"0"+n.slice(2):n);
+  const f=$("#siteForm"); for(const k in site) if(f.elements[k]) f.elements[k].value=site[k];
+  togglePay();
+}
+function togglePay(){
+  const on=$("#bookForm").elements.type.value==="استشارة أونلاين";
+  $("#bookBranch").style.display=on?"none":""; $("#bookBranch").required=!on; $("#bookHow").style.display=on?"":"none";
+  const b=$("#payBox"); b.style.display=on?"block":"none";
+  b.innerHTML=`<b style="color:var(--yel)">قيمة الاستشارة الأونلاين: ${esc(site.onlineFee)} جنيه</b><br>التحويل مسبقاً قبل الموعد على:<br>${esc(site.payText).replace(/\n/g,"<br>")}<br>وابعت صورة التحويل على الواتساب لتأكيد الحجز.`;
+}
+async function loadSite(){
+  try{
+    if(DEMO){ const v=localStorage.getItem("ac_site"); if(v) site={...defSite,...JSON.parse(v)}; }
+    else{ const d=await fb.getDoc(fb.doc(db,"settings","site")); if(d.exists()) site={...defSite,...d.data()}; }
+  }catch(e){}
+  applySite();
+}
+async function upd(col,id,obj){
+  if(DEMO){ const a=(await list(col)).map(x=>x.id===id?{...x,...obj}:x); localStorage.setItem("ac_"+col,JSON.stringify(a)); return; }
+  await fb.setDoc(fb.doc(db,col,id),obj,{merge:true});
+}
+function fillBranches(items){ $("#bookBranch").innerHTML='<option value="">اختار الفرع</option>'+items.map(b=>`<option>${esc(b.name)}</option>`).join(""); }
+const delBtn=(col,id)=>`<button class="btn o edt" data-edit="${col}" data-id="${esc(id)}">تعديل</button><button class="btn r del" data-del="${col}" data-id="${esc(id)}">حذف</button>`;
 const tpl = {
   branches: b=>`<div class="card"><h3>📍 ${esc(b.name)}</h3><p>${esc(b.address)}</p>${b.phone?`<p>📞 ${esc(b.phone)}</p>`:""}
     <div class="acts">${/^https?:\/\//.test(b.map)?`<a class="btn" target="_blank" rel="noopener" href="${esc(b.map)}">افتح اللوكيشن</a>`:""}${b.phone?`<a class="btn y" href="tel:${esc(b.phone)}">اتصل بنا</a>`:""}${delBtn("branches",b.id)}</div></div>`,
-  treatments: t=>`<div class="card">${/^(data:image\/|https?:\/\/)/.test(t.img||"")?`<img class="timg" loading="lazy" src="${esc(t.img)}" alt="${esc(t.title)}">`:""}<h3>✅ ${esc(t.title)}</h3><p style="white-space:pre-line">${esc(t.desc)}</p><div class="acts">${delBtn("treatments",t.id)}</div></div>`,
+  treatments: t=>`<div class="card">${/^(data:image\/|https?:\/\/)/.test(t.img||"")?`<img class="timg" loading="lazy" src="${esc(t.img)}" alt="${esc(t.title)}">`:""}<h3>✅ ${esc(t.title)}</h3><p style="white-space:pre-line">${esc(t.desc)}</p><div class="acts">${t.btnText?`<a class="btn y" target="_blank" rel="noopener" href="${esc(btnHref(t))}">${esc(t.btnText)}</a>`:""}${delBtn("treatments",t.id)}</div></div>`,
   reviews: r=>`<div class="card"><div class="stars">${"★".repeat(+r.stars||5)}</div>${r.text?`<p>“${esc(r.text)}”</p>`:""}${/^data:image\//.test(r.img||"")?`<img class="rimg" loading="lazy" src="${esc(r.img)}" alt="رأي ${esc(r.name)}">`:""}${vid(r.video)}<div class="who">— ${esc(r.name)}</div><div class="acts">${delBtn("reviews",r.id)}</div></div>`
 };
 async function render(){
   for(const col of Object.keys(tpl)){
-    try{ const items=await list(col); $("#"+col+"List").innerHTML = items.length? items.map(tpl[col]).join("") : `<p style="color:var(--mut)">قريباً...</p>`; }
+    try{ const items=await list(col); cache[col]=items; if(col==="branches") fillBranches(items); $("#"+col+"List").innerHTML = items.length? items.map(tpl[col]).join("") : `<p style="color:var(--mut)">قريباً...</p>`; }
     catch(e){ $("#"+col+"List").innerHTML=`<p style="color:#ff8a8a;direction:ltr;text-align:left">تعذر تحميل البيانات: ${esc(e.code||e.message||e)}</p>`; }
   }
 }
@@ -269,9 +335,10 @@ document.addEventListener("submit",async e=>{
     const img=f.elements.imgFile?.files[0];
     if(f.dataset.col==="reviews" && !o.text && !img) throw new Error("اكتب نص الرأي أو ارفع سكرين شوت");
     if(img) o.img=await shrink(img,f.dataset.col==="reviews"?1100:800);
-    await add(f.dataset.col,o); f.reset(); render();
+    if(f.dataset.editId){ await upd(f.dataset.col,f.dataset.editId,o); delete f.dataset.editId; } else await add(f.dataset.col,o);
+    f.reset(); render();
   }catch(err){ say("حصل خطأ: "+(err.message||err)); }
-  btn.disabled=false; btn.textContent=old;
+  btn.disabled=false; btn.textContent="إضافة";
 });
 function say(m){const d=document.createElement("div");d.textContent=m;d.style.cssText="position:fixed;bottom:84px;left:50%;transform:translateX(-50%);background:#ffd21f;color:#222;padding:10px 16px;border-radius:10px;z-index:99;max-width:90vw;text-align:center";document.body.appendChild(d);setTimeout(()=>d.remove(),6000)}
 function shrink(file,max=800){
@@ -294,8 +361,30 @@ document.addEventListener("click",async e=>{
   const b=e.target.closest("[data-del]"); if(!b||!isAdmin) return;
   if((DEMO||confirm("متأكد من الحذف؟"))){ await del(b.dataset.del,b.dataset.id); render(); }
 });
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-edit]"); if(!b||!isAdmin) return;
+  const col=b.dataset.edit, it=(cache[col]||[]).find(x=>x.id===b.dataset.id); if(!it) return;
+  const f=document.querySelector(`form[data-col="${col}"]`);
+  for(const el of f.elements) if(el.name && el.type!=="file" && it[el.name]!==undefined) el.value=it[el.name];
+  f.dataset.editId=it.id; f.querySelector("button").textContent="حفظ التعديل";
+  f.scrollIntoView({behavior:"smooth",block:"center"}); say("عدّل البيانات واضغط حفظ التعديل");
+});
+$("#siteForm").onsubmit=async e=>{
+  e.preventDefault(); if(!isAdmin) return;
+  site={...site,...Object.fromEntries(new FormData(e.target))};
+  try{ if(DEMO) localStorage.setItem("ac_site",JSON.stringify(site)); else await fb.setDoc(fb.doc(db,"settings","site"),site); applySite(); render(); say("تم الحفظ ✅"); }
+  catch(err){ say("خطأ: "+(err.code||err.message)); }
+};
+$("#bookForm").elements.type.onchange=togglePay;
+$("#bookForm").onsubmit=e=>{
+  e.preventDefault(); const d=Object.fromEntries(new FormData(e.target)), on=d.type==="استشارة أونلاين";
+  const L=["السلام عليكم دكتور سيد 👋",d.type,"الاسم: "+d.pname,"السن: "+(d.age||"-")];
+  if(on) L.push("طريقة التواصل: "+d.how,"قيمة الاستشارة: "+site.onlineFee+" جنيه (هحوّل مسبقاً وأبعت صورة التحويل)"); else L.push("الفرع: "+d.branch);
+  L.push("الشكوى: "+(d.complaint||"-"));
+  window.open(waUrl(L.join("\n")),"_blank","noopener");
+};
 showAuth(); addEventListener("hashchange",showAuth);
-render();
+applySite(); render(); loadSite().then(render);
 </script>
 </body>
 </html>
